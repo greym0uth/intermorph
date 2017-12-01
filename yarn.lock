@@ -2,6 +2,3 @@
 # yarn lockfile v1
 
 
-coffeescript@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/coffeescript/-/coffeescript-2.0.3.tgz#760f02724f5f0911be7cefa34a8e0e10c5d8512a"
