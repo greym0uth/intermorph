@@ -1,0 +1,13 @@
+{
+	"name": "intermorph",
+	"version": "0.0.1",
+	"main": "index.js",
+	"author": "[Jaden Giordano, Aidan Chelig]",
+	"license": "MIT",
+	"scripts": {
+		"start": "node ./"
+	},
+	"devDependencies": {
+		"coffeescript": "^2.0.3"
+	}
+}
