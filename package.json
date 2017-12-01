@@ -1,13 +1,26 @@
 {
-	"name": "intermorph",
+	"name": "Intermorph",
 	"version": "0.0.1",
 	"main": "index.js",
-	"author": "[Jaden Giordano, Aidan Chelig]",
-	"license": "MIT",
+	"author": {
+		"name": "Jaden Giordano",
+		"email": "jaden@forester.io",
+		"url": "http://forester.io"
+	},
+	"contributors": {
+		"name": "Aidan Chelig",
+		"email": "aidan.chelig@gmail.com"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Jaden-Giordano/intermorph.git"
+	},
+	"license": "GPL-3.0",
+	"engines": {
+		"node": ">=8.9.0",
+		"yarn": ">=1.3.2"
+	},
 	"scripts": {
 		"start": "node ./"
-	},
-	"devDependencies": {
-		"coffeescript": "^2.0.3"
 	}
 }
