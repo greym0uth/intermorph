@@ -6,7 +6,7 @@ class Block {
 		this.previousHash = previousHash;
 		this.timestamp = timestamp;
 		this.data = data;
-		this.hash = calculateHash(this.index, this.previousHash, this.timestamp, this.data).toString();
+		this.hash = Block.calculateHash(this.index, this.previousHash, this.timestamp, this.data).toString();
 	}
 	
 	static calculateHash(index, previousHash, timestamp, data) {
@@ -14,7 +14,7 @@ class Block {
 	}
 	
 	static calculateHashFromBlock(block) {
-		return calculateHash(block.index, block.previousHash, block.timestamp, block.data);
+		return Block.calculateHash(block.index, block.previousHash, block.timestamp, block.data);
 	}
 	
 	static generateNextBlock(data) {
@@ -34,7 +34,7 @@ class Block {
 			return false;
 		} else if (previousBlock.hash !== newBlock.previousHash) {
 			return false;
-		} else if (calculateHashFromBlock(newBlock) !== newBlock.hash) {
+		} else if (Block.calculateHashFromBlock(newBlock) !== newBlock.hash) {
 			return false;
 		}
 		
