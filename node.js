@@ -30,7 +30,7 @@ app.get('/peers', (req, res) => {
 });
 
 app.post('/peers', (req, res) => {
-	
+	peers.push(req.body.data);
 	
 	res.status(200).send();
 });
