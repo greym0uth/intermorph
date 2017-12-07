@@ -1,3 +1,7 @@
+/**
+ * Proof-of-Concept for nodes and how they connect and work. P2P-Node will be used in after POC is completed.
+ */
+
 const express = require('express');
 const bodyParser = require('body-parser');
 
