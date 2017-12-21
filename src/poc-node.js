@@ -26,13 +26,6 @@ app.post('/chain', (req, res) => {
 		chain = newChain;
 });
 
-app.post('/block', (req, res) => {
-	let newBlock = Block.generateNextBlock(req.body.data);
-	chain.addBlock(newBlock);
-
-	res.status(200).send();
-});
-
 app.get('/peers', (req, res) => {
 	res.json(peers);
 });
@@ -43,18 +36,30 @@ app.post('/peers/new', (req, res) => {
 	res.status(200).send();
 });
 
+function broadcast() {
+	for (let i = 0; i < peers.length; i++) {
+		let peer = peers[i];
+
+		axios.post(`${peer}/chain`, chain).catch(err => {
+			info(`Unable to broadcast to peer ${peer}: ${JSON.stringify(err)}`);
+		});
+	}
+}
+
+function addBlock(data) {
+	if (data.error < chain.getLatestBlock().data.error || chain.getLatestBlock().data.error === undefined) {
+		let newBlock = Block.generateNextBlock(data, chain);
+		chain.addBlock(newBlock);
+
+		broadcast();
+	}
+}
+
 module.exports = {
 	app,
-	getChain: () => {
+	getChain() {
 		return chain;
 	},
-	broadcast: () => {
-		for (let i = 0; i < peers.length; i++) {
-			let peer = peers[i];
-
-			axios.post(`${peer}/chain`, chain).catch(err => {
-				info(`Unable to broadcast to peer ${peer}: ${JSON.stringify(err)}`);
-			});
-		}
-	}
+	broadcast,
+	addBlock
 };

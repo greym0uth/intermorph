@@ -21,7 +21,7 @@
 		"yarn": ">=1.3.2"
 	},
 	"scripts": {
-		"start": "node lib/",
+		"start": "node src/",
 		"eslint": "eslint lib/**/*.js"
 	},
 	"dependencies": {
@@ -34,6 +34,7 @@
 		"libp2p-secio": "^0.8.1",
 		"libp2p-spdy": "^0.11.0",
 		"libp2p-websockets": "^0.10.4",
+		"synaptic": "^1.1.4",
 		"winston": "^2.4.0",
 		"yarn": "^1.3.2"
 	},

@@ -22,7 +22,7 @@ class Chain {
 		return this.chain.length;
 	}
 
-	getLatestHash() {
+	getLatestBlock() {
 		return this.chain[this.chain.length - 1];
 	}
 }

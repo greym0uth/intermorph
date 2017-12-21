@@ -14,7 +14,32 @@
 ## Installation
 
 ```bash
-$ yarn add intermorph
+$ yarn add intermorph (Not quite ready yet)
+```
+
+## Usage
+
+```js
+const Intermorph = require('intermorph');
+
+const trainingSet = [
+	{
+		input: [0],
+		output: [1]
+	},
+	{
+		input: [1],
+		output: [0]
+	}
+];
+
+let morph = new Intermorph({
+	trainingSet
+});
+
+while (true) {
+	morph.cycle();
+}
 ```
 
 ## Contributing
