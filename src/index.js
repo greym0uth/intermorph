@@ -16,12 +16,17 @@ module.exports = class Intermorph {
 		this.minimalAcceptableProgress = options.minimalAcceptableProgress || 0.001;
 		this.trainingSet = options.trainingSet || {};
 
+		this.iterationsPerTrain = options.iterationsPerTrain || 100;
+		this.trainFrequency = options.trainFrequency || 1;
+		if (this.trainFrequency === 0)
+			throw 'Training frequency 1 or greater!';
+
 		app.listen(port, () => {
 			info(`Listening on port ${port}`);
 		});
 	}
 
-	cycle() {
+	_train() {
 		let lastChain = node.getChain();
 
 		let liquid = new Architect.Liquid(this.inputs, this.pool, this.outputs, this.connections, this.gates);
@@ -33,23 +38,38 @@ module.exports = class Intermorph {
 		let options = {
 			cost: Trainer.cost.CROSS_ENTROPY,
 			error: 0.0000001,
-			iterations: 100000,
-			schedule: {
-				every: 1000,
-				do: (data) => {
-					if (node.getChain().size() > lastChain.size())
-						return true;
-
-					if (lastChain.getLatestBlock().data.error === undefined || lastChain.getLatestBlock().data.error - data.error > this.minimalAcceptableProgress) {
-						node.addBlock({
-							error: data.error,
-							network: liquid.toJSON()
-						});
-					}
-				}
-			}
+			iterations: this.iterationsPerTrain
 		};
 
-		trainer.train(this.trainingSet, options);
+		const result = trainer.train(this.trainingSet, options);
+
+		// Check if chain has updated since it trained; if so, return so it can be trained with the updated network on the next cylce.
+		if (node.getChain().size() > lastChain.size())
+			return;
+
+		// Check if node meets acceptable criteria for updating chain; if so, update the chain.
+		if (lastChain.getLatestBlock().data.error === undefined || lastChain.getLatestBlock().data.error - result.error > this.minimalAcceptableProgress) {
+			node.addBlock({
+				error: result.error,
+				network: liquid.toJSON()
+			});
+		}
+	}
+
+	/**
+	 * Starts training the network and automatically sync/update the chain with its progress.
+	 * @return {void}
+	 */
+	start() {
+		this.intervalId = setInterval(this._train.bind(this), 1000 / this.trainFrequency);
+	}
+
+	/**
+	 * Stops the training process.
+	 * @return {void}
+	 */
+	stop() {
+		if (this.intervalId)
+			clearInterval(this.intervalId);
 	}
 }
